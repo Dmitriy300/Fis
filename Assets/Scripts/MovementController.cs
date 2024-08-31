@@ -6,11 +6,18 @@ public class MovementController : MonoBehaviour
 {
     
     // Скорость передвижения
-    public float speed = 1f;
+    public float force = 5f;
+    private Rigidbody _rigidbody;
+
+    private void Awake()
+    {
+        _rigidbody = GetComponent<Rigidbody>();
+    }
     private void Update()
     {
         float xDirection = 0; 
         float zDirection = 0;
+
 
         //проверка нажатой клавиши и установка направления
         if (Input.GetKey(KeyCode.W))
@@ -34,7 +41,8 @@ public class MovementController : MonoBehaviour
             xDirection = 1;
         }
         
-        Vector3 direction = new Vector3(xDirection,0,zDirection) * (speed * Time.deltaTime);
-        transform.Translate(direction);
+        Vector3 direction = new Vector3(xDirection, 0, zDirection) * force;
+        //_rigidbody.AddForce(direction);
+        _rigidbody.velocity = direction;
     }
 }
