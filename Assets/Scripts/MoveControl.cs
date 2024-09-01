@@ -4,24 +4,55 @@ using UnityEngine;
 
 public class MoveControl : MonoBehaviour
 {
-    // Скорость перемещения игрока
-    public float moveSpeed = 5f;
-    // Скорость поворота игрока
-    public float rotateSpeed = 720f;
-    // Переменная для хранения компонента Rigidbody
-   
+    public float moveSpeed = 5f;           // Скорость движения
+    public float rotateSpeed = 72f;       // Скорость поворота
+    private Rigidbody _rigitbody;                  // Компонент Rigidbody
+    private bool _isGrounded;               // Флаг, находится ли игрок на земле
 
-    
-    private void Update()
+    void Start()
     {
-        // Получаем элементы управления по осям (WASD или стрелки)
-        float moveDirection = Input.GetAxis("Vertical");
-        float rotateDirection = Input.GetAxis("Horizontal");
+        _rigitbody = GetComponent<Rigidbody>();    // Получаем компонент Rigidbody
+    }
 
-        // Перемещаем игрока вперед и назад
-        transform.Translate(Vector3.forward * moveDirection * moveSpeed * Time.deltaTime);
+    void Update()
+    {
+        // Получаем ввод для движения и поворота
+        float move = Input.GetAxis("Vertical") * moveSpeed * Time.deltaTime;
+        float rotate = Input.GetAxis("Horizontal") * rotateSpeed * Time.deltaTime;
 
-        // Поворачиваем игрока вправо и влево
-        transform.Rotate(Vector3.up, rotateDirection * rotateSpeed * Time.deltaTime);
+        // Перемещаем игрока
+        transform.Translate(0, 0, move);
+
+        // Поворачиваем игрока
+        transform.Rotate(0, rotate, 0);
+
+        
+    }
+
+    void OnCollisionStay(Collision collision)
+    {
+        // Проверяем, касается ли игрок поверхности с тегом "Ground"
+        if (collision.gameObject.CompareTag("Ground"))
+        {
+            _isGrounded = true;
+        }
+    }
+
+    void OnCollisionExit(Collision collision)
+    {
+        // Проверяем, перестал ли игрок касаться поверхности с тегом "Ground"
+        if (collision.gameObject.CompareTag("Ground"))
+        {
+            _isGrounded = false;
+        }
+    }
+
+    void OnCollisionEnter(Collision collision)
+    {
+        // Обработчик сталкивания с предметами для предотвращения "застреваний"
+        if (collision.gameObject.CompareTag("Ground"))
+        {
+            _isGrounded = true;
+        }
     }
 }
