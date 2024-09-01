@@ -9,16 +9,14 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            Instantiate(healthItemPrefab, transform.position, Quaternion.identity);
-        }
+       
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("Cube"))
+        if (other.gameObject.CompareTag("Health"))
         {
+            health += 1;
             Destroy(other.gameObject);
 
         }

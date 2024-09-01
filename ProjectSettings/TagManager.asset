@@ -8,6 +8,7 @@ TagManager:
   - Cube
   - Ground
   - SpawnPoint
+  - Health
   layers:
   - Default
   - TransparentFX
